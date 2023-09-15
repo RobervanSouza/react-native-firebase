@@ -19,6 +19,18 @@ function errosFirebase (error){
     return message;
 }
 
+function errosLogin (error){
+    let message = '';
+    switch(error.code){
+        case AuthErrorCodes.INVALID_EMAIL:
+            message= 'Email incorreto';
+            break;       
+            default:
+                message= 'Email ou senha invalido'
+    }
+    return message;
+}
+
 export async function CadastrarUsuario(email, senha) {
     const response = await createUserWithEmailAndPassword(auth, email, senha)
         .then((userCredential) => {
@@ -33,7 +45,7 @@ export async function CadastrarUsuario(email, senha) {
         return response;
 }
 
-export async function Logar(email, senha) {
+export async function logar(email, senha) {
     const response = await signInWithEmailAndPassword(auth, email, senha)
         .then((userCredential) => {
             console.log(userCredential)
@@ -41,7 +53,7 @@ export async function Logar(email, senha) {
         })
         .catch((error) => {
             console.log(error)
-          return 'erro ao logar'
+          return errosLogin(error)
         });
         
         return response;

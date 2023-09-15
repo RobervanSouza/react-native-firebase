@@ -3,10 +3,16 @@ import { View } from 'react-native';
 import Botao from '../../componentes/Botao';
 import { EntradaTexto } from '../../componentes/EntradaTexto';
 import estilos from './estilos';
+import { Logar } from '../../servicos/requisicao';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+
+  async function login(){
+    const response = await Logar(email, senha)
+    console.log(response)
+  }
 
   return (
     <View style={estilos.container}>
@@ -22,7 +28,7 @@ export default function Login({ navigation }) {
         secureTextEntry
       />
       
-      <Botao onPress={() => navigation.navigate('Principal')}>LOGAR</Botao>
+      <Botao onPress={() => login()}>LOGAR</Botao>
       <Botao 
         onPress={() => { navigation.navigate('Cadastro') }}
       >

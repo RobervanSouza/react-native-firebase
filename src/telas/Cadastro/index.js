@@ -4,7 +4,7 @@ import Botao from '../../componentes/Botao';
 import { EntradaTexto } from '../../componentes/EntradaTexto';
 import estilos from './estilos';
 import { CadastrarUsuario } from '../../servicos/requisicao';
-
+import { Alerta } from '../../componentes/Alerta';
 
 export default function Cadastro({ navigation }) {  
   const [email, setEmail] = useState('');
@@ -31,16 +31,18 @@ async function realizarCadastro() {
    const response= await CadastrarUsuario(email, senha) // limpar input
 
    if(response == 'sucesso'){
-    Alert.alert('Usuario Cadastrado com sucesso!')
+     setMensagemErro('Usuario casdastrado com sucesso!')
+     
      setEmail('')
      setSenha('')
      setConfirmaSenha('')
      
    } else {
-    Alert.alert(response);
-   }
-    setEstatusErro('')
-    setMensagemErro('')
+   
+     setMensagemErro(response)
+    }
+    setEstatusErro('firebase')
+   
     
   }
 
@@ -73,7 +75,11 @@ async function realizarCadastro() {
         messageError={mensagemErro}
         secureTextEntry
       />
-      
+      <Alerta
+      message={mensagemErro}
+      error={statusErro == 'firebase'}
+      setError={setEstatusErro}
+      />
       <Botao onPress={() => realizarCadastro()}>CADASTRAR</Botao>
     </View>
   );

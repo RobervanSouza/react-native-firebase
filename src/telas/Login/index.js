@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import Botao from '../../componentes/Botao';
 import { EntradaTexto } from '../../componentes/EntradaTexto';
 import estilos from './estilos';
 import { logar } from '../../servicos/requisicao';
 import { Alerta} from '../../componentes/Alerta/index';
+import { auth } from '../../config/firebase';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [ statusErro, setEstatusErro ] = useState('');
   const [ mensagemErro, setMensagemErro ] = useState('');
+
+  useEffect(() => {
+    const usuarioLogar = auth.onAuthStateChanged( usuario => {
+      if (usuario) {
+        navigation.replace('Principal')
+      }
+    } )
+
+    return () => usuarioLogar();
+  }, []);
   async function login(){
     if (email == '') {
       setMensagemErro('Digite com seu email')
@@ -24,12 +35,12 @@ export default function Login({ navigation }) {
       setEstatusErro('senha')
     } else {
       const response = await logar(email, senha)
-      if ( typeof response === 'string') {
+      if (response === 'erro') {
         setEstatusErro('firebase')
-        setMensagemErro(response)
+        setMensagemErro('email ou  senha invalida')
       }
       else {
-        navigation.navigate('Principal')
+        navigation.replace('Principal')
       }
     }
 

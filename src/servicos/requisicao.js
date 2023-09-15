@@ -53,7 +53,7 @@ export async function logar(email, senha) {
         })
         .catch((error) => {
             console.log(error)
-          return errosLogin(error)
+          return 'erro'
         });
         
         return response;

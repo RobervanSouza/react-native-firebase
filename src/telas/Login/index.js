@@ -7,19 +7,17 @@ import { logar } from '../../servicos/requisicao';
 import { Alerta} from '../../componentes/Alerta/index';
 import { auth } from '../../config/firebase';
 import animacao from'../../../.images/gif-loading.gif';
+import { alterarDados } from '../../utils/alteraDados';
+
 
 
 export default function Login({ navigation }) {
 
-  const [dados, setDados] = useState( {
+  const [dados, setDados] = useState({
     email: '',
     senha: '',
   })
-  const alterarDados = (variavel, valor) => {
-    setDados({
-      ...dados , [variavel]: valor
-    })
-  }
+ 
   const [ statusErro, setEstatusErro ] = useState('');
   const [ mensagemErro, setMensagemErro ] = useState('');
   const [ carregando, setCarregando ] = useState(true);
@@ -68,8 +66,6 @@ export default function Login({ navigation }) {
         navigation.replace('Principal')
       }
     }
-
-  
   }
   
   return (
@@ -79,7 +75,7 @@ export default function Login({ navigation }) {
         value={dados.email}
         error={statusErro == 'email'}
         messageError={mensagemErro}
-        onChangeText={texto => alterarDados('email', texto)}
+        onChangeText={texto => alterarDados('email', texto, dados, setDados)}
         
       />
       <EntradaTexto
@@ -87,7 +83,7 @@ export default function Login({ navigation }) {
         value={dados.senha}
         error={statusErro == 'senha'}
         messageError={mensagemErro}
-        onChangeText={texto => alterarDados( 'senha',texto)}
+        onChangeText={texto => alterarDados( 'senha',texto, dados, setDados)}
         secureTextEntry
       />
       

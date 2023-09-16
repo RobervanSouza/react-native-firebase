@@ -5,37 +5,38 @@ import { EntradaTexto } from '../../componentes/EntradaTexto';
 import estilos from './estilos';
 import { CadastrarUsuario } from '../../servicos/requisicao';
 import { Alerta } from '../../componentes/Alerta';
+import {alterarDados} from '../../utils/alteraDados';
 
 export default function Cadastro({ navigation }) {  
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [confirmaSenha, setConfirmaSenha] = useState('');
+ 
   const [statusErro, setEstatusErro] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
+  const [ dados, setDados ] = useState({
+    email: '',
+    senha: '',
+    confirmaSenha:'',
+  })
   
 
 async function realizarCadastro() {
-  if (email == ''){
+  if (dados.email == ''){
     setMensagemErro('Digite com seu email')
     setEstatusErro('email')
-  } else if (senha == '') {
+  } else if (dados.senha == '') {
     setMensagemErro('Digite com sua senha')
     setEstatusErro('senha')
-  } else if (confirmaSenha == '') {
+  } else if (dados.confirmaSenha == '') {
     setMensagemErro('Confirme sua senha')
     setEstatusErro('confirmaSenha')
-  } else if (confirmaSenha != senha ) {
+  } else if (dados.confirmaSenha != dados.senha ) {
     setMensagemErro('As senhas estão diferentes')
     setEstatusErro('confirmaSenha')
   }else {
-   const response= await CadastrarUsuario(email, senha) // limpar input
+   const response= await CadastrarUsuario(dados.email, dados.senha) // limpar input
 
    if(response == 'sucesso'){
      setMensagemErro('Usuario casdastrado com sucesso!')
-     
-     setEmail('')
-     setSenha('')
-     setConfirmaSenha('')
+
      
    } else {
    
@@ -53,16 +54,16 @@ async function realizarCadastro() {
     <View style={estilos.container}>
       <EntradaTexto 
         label="E-mail"
-        value={email}
-        onChangeText={texto => setEmail(texto)}
+        value={dados.email}
+        onChangeText={texto => alterarDados('email',texto, dados, setDados)}
         error={statusErro == 'email'}
         messageError={mensagemErro}
 
       />
       <EntradaTexto
         label="Senha"
-        value={senha}
-        onChangeText={texto => setSenha(texto)}
+        value={dados.senha}
+        onChangeText={texto => alterarDados("senha",texto, dados, setDados)}
         error={statusErro == 'senha'}
         messageError={mensagemErro}
         secureTextEntry
@@ -70,8 +71,8 @@ async function realizarCadastro() {
 
       <EntradaTexto
         label="Confirmar Senha"
-        value={confirmaSenha}
-        onChangeText={texto => setConfirmaSenha(texto)}
+        value={dados.confirmaSenha}
+        onChangeText={texto => alterarDados("confirmaSenha",texto, dados, setDados)}
         error={statusErro == 'confirmaSenha'}
         messageError={mensagemErro}
         secureTextEntry

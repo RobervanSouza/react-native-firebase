@@ -1,27 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Image} from 'react-native';
 import Botao from '../../componentes/Botao';
 import { EntradaTexto } from '../../componentes/EntradaTexto';
 import estilos from './estilos';
 import { logar } from '../../servicos/requisicao';
 import { Alerta} from '../../componentes/Alerta/index';
 import { auth } from '../../config/firebase';
+import animacao from'../../../.images/gif-loading.gif';
+
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [ statusErro, setEstatusErro ] = useState('');
   const [ mensagemErro, setMensagemErro ] = useState('');
+  const [ carregando, setCarregando ] = useState(true);
+
 
   useEffect(() => {
     const usuarioLogar = auth.onAuthStateChanged( usuario => {
       if (usuario) {
         navigation.replace('Principal')
       }
-    } )
+      setCarregando(false)
+    })
 
     return () => usuarioLogar();
   }, []);
+
+  if (carregando) {
+    return (
+      <View style={estilos.containerAnimacao} >
+        <Image 
+        source={animacao}
+        style={estilos.imagemAnimacao}
+        />
+      </View>
+    )
+  }
+
   async function login(){
     if (email == '') {
       setMensagemErro('Digite com seu email')
@@ -73,7 +90,7 @@ export default function Login({ navigation }) {
         />
     
 
-      <Botao onPress={() => login()}>LOGAR</Botao>
+      <Botao onPress={() => login()}>LOGAR </Botao>
       <Botao 
         onPress={() => { navigation.navigate('Cadastro') }}
         >

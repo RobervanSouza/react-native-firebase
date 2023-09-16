@@ -10,8 +10,16 @@ import animacao from'../../../.images/gif-loading.gif';
 
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+
+  const [dados, setDados] = useState( {
+    email: '',
+    senha: '',
+  })
+  const alterarDados = (variavel, valor) => {
+    setDados({
+      ...dados , [variavel]: valor
+    })
+  }
   const [ statusErro, setEstatusErro ] = useState('');
   const [ mensagemErro, setMensagemErro ] = useState('');
   const [ carregando, setCarregando ] = useState(true);
@@ -40,18 +48,18 @@ export default function Login({ navigation }) {
   }
 
   async function login(){
-    if (email == '') {
+    if (dados.email == '') {
       setMensagemErro('Digite com seu email')
       setEstatusErro('email')
-    } else if (senha == '') {
+    } else if (dados.senha == '') {
       setMensagemErro('Digite com sua senha')
       setEstatusErro('senha')
     }
-    else if (senha.length < 6) {
+    else if (dados.senha.length < 6) {
       setMensagemErro('A senha precisa ter no mínimo 6 dígitos/caracteres')
       setEstatusErro('senha')
     } else {
-      const response = await logar(email, senha)
+      const response = await logar(dados.email, dados.senha)
       if (response === 'erro') {
         setEstatusErro('firebase')
         setMensagemErro('email ou  senha invalida')
@@ -68,17 +76,18 @@ export default function Login({ navigation }) {
     <View style={estilos.container}>
       <EntradaTexto 
         label="E-mail"
-        value={email}
+        value={dados.email}
         error={statusErro == 'email'}
         messageError={mensagemErro}
-        onChangeText={texto => setEmail(texto)}
+        onChangeText={texto => alterarDados('email', texto)}
+        
       />
       <EntradaTexto
         label="Senha"
-        value={senha}
+        value={dados.senha}
         error={statusErro == 'senha'}
         messageError={mensagemErro}
-        onChangeText={texto => setSenha(texto)}
+        onChangeText={texto => alterarDados( 'senha',texto)}
         secureTextEntry
       />
       

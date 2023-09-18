@@ -1,68 +1,36 @@
-<h1 align="center">
-    <img alt="Firebase-Auth" title="#Firebase-Auth" src=".images/header.png" width="100%" />
-</h1>
+AULA 01
 
-<!-- https://alura-github-thumbnail-generator.vercel.app/ -->
+Aprendemos que o Firebase é um serviço online oferecido pelo Google que contém diversas ferramentas para integrar em nossas aplicações, e uma delas é a autenticação;
+Vimos como criar um projeto no console do Firebase, adicionando o nome do projeto;
+Registramos nossa aplicação criada como Web, visto que o projeto Web funciona tanto para aplicações React quanto React Native;
+Ativamos a ferramenta Authentication no Firebase console para poder usar os recursos de autenticação;
+Instalamos o Firebase no projeto base e configuramos nossas chaves de acesso no projeto base para conectar com os serviços do Firebase que criamos no console do Firebase;
+E aprendemos a cadastrar usuário com o Firebase Authentication, usando a funcionalidade createUserWithEmailAndPassword;
+Configuramos nossas chaves de acesso usando variáveis de ambiente, com o .env, permitindo uma maior segurança para a nossa aplicação.
 
-<h4 align="center"> 
-	AluraEsporte
-</h4>
+AULA 02
 
-<p align="center">
-  <a href="#information_source-o-que-é-o-aluraesporte">O que é o AluraEsporte?</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#rocket-Tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#information_source-como-usar">Como usar</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-</p>
+Aprendemos a usar a função "createUserWithEmailAndPassword" para criar usuários com email e senha e salvar com o Firebase;
+Modularizamos o nosso código, mantendo boas práticas de programação com a criação de um arquivo específico para as requisições do Firebase;
+Tratamos os possíveis erros que poderiam ser retornados do Firebase usando o AuthErrorCodes e criando um switch case para retornar mensagens personalizadas para os erros;
+Criamos um componente usando o SnackBar do react-native-paper para poder exibir as mensagens de erro para o usuário de uma forma sutil e agradável.
 
-## :information_source: O que é o AluraEsporte?
+AULA 03
 
-O AluraEsporte é uma aplicação feita em React Native que permite aos usuários encontrarem produtos de esportes. Nessa aplicação foi integrado o Firebase para que os usuários possam se cadastrar e fazer login.
+A implementar a função signInWithEmailAndPassword do Firebase para fazer a autenticação e verificar se o login, ou seja, email e senha digitados estavam corretos;
+Tratamos os erros do login de forma segura para evitar que pessoas maliciosas descubram o email e senha de algum usuário;
+Aplicamos o componente do SnackBar para exibir mensagens de erro para o usuário.
+Caso esteja com alguma dúvida ou dificuldade, revise o material, assista novamente as aulas ou pratique mais uma vez. E, se ainda estiver com dificuldade em prosseguir, procure o fórum e compartilhe sua dúvida com outras pessoas para que possam se ajudar
 
-Esse projeto é utilizado na formação Firebase de React Native da plataforma da Alura.
+AULA 04
 
+Aprendemos sobre a verificação do usuário autenticado com a funcionalidade auth.onAuthStateChanged no useEffect na tela de login;
+Fizemos a leitura dos dados do usuário salvos na memória interna;
+E aprendemos a realizar a implementação do logout com funções do Firebase.
 
-<h1 align="center">
-    <img alt="Demonstracao" title="Demonstracao" src=".images/demo.gif" width="400px" />
-</h1>
-
-
-## :rocket: Tecnologias
-
-Esse projeto foi desenvolvido com a utilização das seguintes tecnologias:
-- [React Native][rn]
-- [Expo][expo]
-
-## :information_source: Como usar
-
-Para copiar e executar essa aplicação, você precisa de três pré-requisitos: [Git](https://git-scm.com), [Node.js][nodejs] + [Yarn][yarn] intalados no seu computador.
-
-No terminal, digite os comandos a seguir:
-
-### Baixar e instalar o projeto
-
-```bash
-# Clonar esse repositório
-$ git clone https://github.com/alura-cursos/react-native-firebase-authentication.git
-
-# Vá para o ropositório
-$ cd react-native-firebase-authentication
-
-# Instale as dependências
-$ npm install
-```
-
-### Executar o Mobile
-
-```bash
-# Execute em outro terminal (dentro da pasta AluraEsporte)
-$ expo start
-```
+AULA 05
 
 
-
-Espero que você utilize ao máximo deste projeto para se aprimorar! E se quiser dar um salve, estou lá no LinkedIn [André Oliveira Cunha](https://www.linkedin.com/in/andr%C3%A9-oliveira-cunha-b26b3a156/). :wave: 
-
-[nodejs]: https://nodejs.org/
-[expo]: https://docs.expo.dev/
-[rn]: https://facebook.github.io/react-native/
-[yarn]: https://yarnpkg.com/
+Aprendemos a fazer a refatoração do armazenamento dos dados do nosso formulário;
+Fizemos a refatoração da criação dos inputs do formulário;
+E aprendemos como fazer a refatoração das validações de entradas vazias e adição de Regex para validações mais específicas

@@ -2,15 +2,22 @@ import { useState } from 'react';
 import { TextInput, HelperText } from 'react-native-paper';
 import estilos from './estilos';
 
-export function EntradaTexto({ label, value, onChangeText, secureTextEntry, error, messageError }) {
+export function EntradaTexto({ 
+  label, 
+  value, 
+  onChangeText, 
+  secureTextEntry, 
+  error, 
+  messageError }) {
   const [secureMode, setSecureMode] = useState(secureTextEntry);
 
+  const mostraMensagemErro = value == null || error // para mostrar a mensagem error
   return (
     <>
       <TextInput
         label={label}
         value={value}
-        error={error}
+        error={mostraMensagemErro}// para o input ficar vermelho
         secureTextEntry={secureMode}
         onChangeText={onChangeText}
         style={estilos.input}
@@ -24,7 +31,7 @@ export function EntradaTexto({ label, value, onChangeText, secureTextEntry, erro
           /> : null
         }
       />
-      {error && <HelperText type="error" visible={error}>
+      {mostraMensagemErro && <HelperText type="error" visible={mostraMensagemErro}>
         {messageError}
       </HelperText>}
     </>

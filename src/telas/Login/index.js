@@ -8,7 +8,7 @@ import { Alerta} from '../../componentes/Alerta/index';
 import { auth } from '../../config/firebase';
 import animacao from'../../../.images/gif-loading.gif';
 import { alterarDados } from '../../utils/alteraDados';
-
+import { entradaTextos } from './entradasFormulario';
 
 
 export default function Login({ navigation }) {
@@ -22,6 +22,7 @@ export default function Login({ navigation }) {
   const [ mensagemErro, setMensagemErro ] = useState('');
   const [ carregando, setCarregando ] = useState(true);
 
+  
 
   useEffect(() => {
     const usuarioLogar = auth.onAuthStateChanged( usuario => {
@@ -45,52 +46,56 @@ export default function Login({ navigation }) {
     )
   }
 
+  function entradaVazia() {// modificado dados da entradadetexto, criando uma variavel mostrar mensagem erro
+      for( const [variavel, valor] of Object.entries(dados)){
+        if(valor == '') {
+          setDados({
+            ...dados,
+            [variavel]: null
+          })
+          return true
+        }
+      }
+      return false;
+   }
   async function login(){
-    if (dados.email == '') {
-      setMensagemErro('Digite com seu email')
-      setEstatusErro('email')
-    } else if (dados.senha == '') {
-      setMensagemErro('Digite com sua senha')
-      setEstatusErro('senha')
-    }
-    else if (dados.senha.length < 6) {
-      setMensagemErro('A senha precisa ter no mínimo 6 dígitos/caracteres')
-      setEstatusErro('senha')
-    } else {
-      const response = await logar(dados.email, dados.senha)
+    
+    if (entradaVazia()) return
+
+    const response = await logar(dados.email, dados.senha)
       if (response === 'erro') {
         setEstatusErro('firebase')
         setMensagemErro('email ou  senha invalida')
+        return
       }
-      else {
         navigation.replace('Principal')
-      }
-    }
+
+
+   
   }
   
   return (
     <View style={estilos.container}>
-      <EntradaTexto 
-        label="E-mail"
-        value={dados.email}
-        error={statusErro == 'email'}
-        messageError={mensagemErro}
-        onChangeText={texto => alterarDados('email', texto, dados, setDados)}
-        
-      />
-      <EntradaTexto
-        label="Senha"
-        value={dados.senha}
-        error={statusErro == 'senha'}
-        messageError={mensagemErro}
-        onChangeText={texto => alterarDados( 'senha',texto, dados, setDados)}
-        secureTextEntry
-      />
+     {
+      entradaTextos.map((entrada) => {
+        return(
+          <EntradaTexto
+            key={entrada.id}
+            // label={entrada.label}
+            // messageError={entrada.messageError}
+            // secureTextEntry={entrada.secureTextEntry}
+            {...entrada} // substidui esses codigo acima
+            value={dados[entrada.name]}
+            onChangeText={valor => alterarDados(entrada.name, valor, dados, setDados)}
+          />
+        )
+      })
+     }
       
       
       <Alerta
         message={mensagemErro}
-        error={statusErro == 'firebase'}
+        error={statusErro}
         setError={setEstatusErro}
         />
     
@@ -104,3 +109,25 @@ export default function Login({ navigation }) {
     </View>
   );
 }
+
+// foi criado uma fução para eliminar o if/else 
+// if (dados.email == '') {
+//   setMensagemErro('Digite com seu email')
+//   setEstatusErro('email')
+// } else if (dados.senha == '') {
+//   setMensagemErro('Digite com sua senha')
+//   setEstatusErro('senha')
+// }
+// else if (dados.senha.length < 6) {
+//   setMensagemErro('A senha precisa ter no mínimo 6 dígitos/caracteres')
+//   setEstatusErro('senha')
+// } else {
+//   const response = await logar(dados.email, dados.senha)
+//   if (response === 'erro') {
+//     setEstatusErro('firebase')
+//     setMensagemErro('email ou  senha invalida')
+//   }
+//   else {
+//     navigation.replace('Principal')
+//   }
+// }

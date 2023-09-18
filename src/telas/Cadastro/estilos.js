@@ -9,3 +9,4 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
   }
 });
+

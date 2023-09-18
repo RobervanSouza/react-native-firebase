@@ -7,7 +7,7 @@ import { logar } from '../../servicos/requisicao';
 import { Alerta} from '../../componentes/Alerta/index';
 import { auth } from '../../config/firebase';
 import animacao from'../../../.images/gif-loading.gif';
-import { alterarDados } from '../../utils/alteraDados';
+import { alterarDados, entradaVazia } from '../../utils/alteraDados';
 import { entradaTextos } from './entradasFormulario';
 
 
@@ -46,21 +46,10 @@ export default function Login({ navigation }) {
     )
   }
 
-  function entradaVazia() {// modificado dados da entradadetexto, criando uma variavel mostrar mensagem erro
-      for( const [variavel, valor] of Object.entries(dados)){
-        if(valor == '') {
-          setDados({
-            ...dados,
-            [variavel]: null
-          })
-          return true
-        }
-      }
-      return false;
-   }
+
   async function login(){
     
-    if (entradaVazia()) return
+    if (entradaVazia( dados, setDados )) return
 
     const response = await logar(dados.email, dados.senha)
       if (response === 'erro') {

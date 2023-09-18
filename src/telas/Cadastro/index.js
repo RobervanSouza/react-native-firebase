@@ -5,7 +5,8 @@ import { EntradaTexto } from '../../componentes/EntradaTexto';
 import estilos from './estilos';
 import { CadastrarUsuario } from '../../servicos/requisicao';
 import { Alerta } from '../../componentes/Alerta';
-import {alterarDados} from '../../utils/alteraDados';
+import {alterarDados, entradaVazia} from '../../utils/alteraDados';
+import { entradaTextos } from './cadastroFormulario';
 
 export default function Cadastro({ navigation }) {  
  
@@ -19,67 +20,43 @@ export default function Cadastro({ navigation }) {
   
 
 async function realizarCadastro() {
-  if (dados.email == ''){
-    setMensagemErro('Digite com seu email')
-    setEstatusErro('email')
-  } else if (dados.senha == '') {
-    setMensagemErro('Digite com sua senha')
-    setEstatusErro('senha')
-  } else if (dados.confirmaSenha == '') {
-    setMensagemErro('Confirme sua senha')
-    setEstatusErro('confirmaSenha')
-  } else if (dados.confirmaSenha != dados.senha ) {
-    setMensagemErro('As senhas estão diferentes')
-    setEstatusErro('confirmaSenha')
-  }else {
-   const response= await CadastrarUsuario(dados.email, dados.senha) // limpar input
-
-   if(response == 'sucesso'){
-     setMensagemErro('Usuario casdastrado com sucesso!')
-
-     
-   } else {
-   
-     setMensagemErro(response)
-    }
-    setEstatusErro('firebase')
-   
-    
+  if(entradaVazia(dados, setDados)) return 
+  if(dados.senha != dados.confirmaSenha){
+    setEstatusErro(true)
+    setMensagemErro('As senhas estão diferentes!')
+    return
   }
-
-
+const response = await CadastrarUsuario(dados.email, dados.senha)
+  if(response != 'sucesso' ){
+    setEstatusErro(true)
+    setMensagemErro(response)
+  }
 }
 
+function verificaSenhas(params) {
+  return dados.senha !== dados.confirmaSenha;
+}
   return (
     <View style={estilos.container}>
-      <EntradaTexto 
-        label="E-mail"
-        value={dados.email}
-        onChangeText={texto => alterarDados('email',texto, dados, setDados)}
-        error={statusErro == 'email'}
-        messageError={mensagemErro}
-
-      />
-      <EntradaTexto
-        label="Senha"
-        value={dados.senha}
-        onChangeText={texto => alterarDados("senha",texto, dados, setDados)}
-        error={statusErro == 'senha'}
-        messageError={mensagemErro}
-        secureTextEntry
-      />
-
-      <EntradaTexto
-        label="Confirmar Senha"
-        value={dados.confirmaSenha}
-        onChangeText={texto => alterarDados("confirmaSenha",texto, dados, setDados)}
-        error={statusErro == 'confirmaSenha'}
-        messageError={mensagemErro}
-        secureTextEntry
-      />
+      {
+        entradaTextos.map((entrada) => {
+          return (
+            <EntradaTexto
+              key={entrada.id}
+              // label={entrada.label}
+              // messageError={entrada.messageError}
+              // secureTextEntry={entrada.secureTextEntry}
+              {...entrada} // substidui esses codigo acima
+              value={dados[ entrada.name ]}
+              onChangeText={valor => alterarDados(entrada.name, valor, dados, setDados)}
+              error={entrada.name != 'confirmaSenha' ? false: verificaSenhas() && dados.confirmaSenha != "" }
+            />
+          )
+        })
+      }
       <Alerta
       message={mensagemErro}
-      error={statusErro == 'firebase'}
+      error={statusErro}
       setError={setEstatusErro}
       />
       <Botao onPress={() => realizarCadastro()}>CADASTRAR</Botao>

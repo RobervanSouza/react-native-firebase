@@ -8,10 +8,22 @@ export function EntradaTexto({
   onChangeText, 
   secureTextEntry, 
   error, 
+  pattern,
   messageError }) {
   const [secureMode, setSecureMode] = useState(secureTextEntry);
 
-  const mostraMensagemErro = value == null || error // para mostrar a mensagem error
+
+  function regexValidation() {
+    if (!value) return false;
+    if (pattern) {
+      const condition = new RegExp(pattern);
+      return !condition.test(value);
+    }
+
+    return false;
+  }
+
+  const mostraMensagemErro = value == null || error || regexValidation() // para mostrar a mensagem error
   return (
     <>
       <TextInput

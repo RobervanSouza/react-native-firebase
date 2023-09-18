@@ -11,7 +11,7 @@ function errosFirebase (error){
             message= 'Email invalido';
             break;
         case AuthErrorCodes.WEAK_PASSWORD:
-            message= 'A senha precisa ter no minimo 6 digitos/caracteres';
+            message= 'A senha precisa ter no minimo 6 digitos';
             break;
             default:
                 message= 'Erro desconhecido'
